@@ -1,0 +1,13 @@
+print(node.heap())
+dofile('config.lua')
+collectgarbage()
+dofile('GPIO.lua')
+tmr.alarm(0, 100, 0, doGPIO)
+restore=chkRestore()
+dofile('wifi.lc')
+dofile("httpd.lc")
+-- Create the httpd server
+svr = net.createServer(net.TCP, 30)
+svr:listen (80, connect)
+collectgarbage()
+print(node.heap())

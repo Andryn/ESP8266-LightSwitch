@@ -1,0 +1,83 @@
+HTTP/1.1 200 OK
+
+<html lang='en'>
+<head>
+    <title>ESP8266 PIN control</title>
+    <script type="text/javascript">
+        path='/';
+        if (typeof(window.history.pushState) == 'function') {
+                window.history.pushState(null, path, path);
+        }
+    </script>
+</head>
+<body>
+    <h1>ESP8266 manual PIN control</h1>
+    <h2>SSID: $SSID, MAC: $MAC</h2>
+    <div name="deviceid"></div>
+    <form action='/set' method='get'>
+        PinOUT number: $pOU1
+        <select name="pVL1">
+            <option value="$ON">ON</option>
+            <option value="$OFF">OFF</option>
+        </select>
+        <br/>
+        PinOUT number: $pOU2
+        <select name="pVL2">
+            <option value="$ON">ON</option>
+            <option value="$OFF">OFF</option>
+        </select>
+        <br/>
+        <input type='submit' value='submit'/>
+    </form>
+
+<script type="text/javascript">
+	load('get', function(xhr) {
+		states = JSON.parse(xhr.responseText);
+		var pVL1 = document.getElementsByName("pVL1")[0];
+		pVL1.options[states.pOU1].selected = true;
+		var pVL2 = document.getElementsByName("pVL2")[0];
+		pVL2.options[states.pOU2].selected = true;
+		var deviceid = document.getElementsByName("deviceid")[0];
+		deviceid.innerHTML = "Device ID:" + states.ID;
+	});
+	function load(url, callback) {
+			var xhr;
+			if(typeof XMLHttpRequest !== 'undefined') xhr = new XMLHttpRequest();
+			else {
+				var versions = new Array("MSXML2.XmlHttp.5.0",
+								"MSXML2.XmlHttp.4.0",
+								"MSXML2.XmlHttp.3.0", 
+								"MSXML2.XmlHttp.2.0",
+								"Microsoft.XmlHttp")
+	 
+				 for(var i = 0, len = versions.length; i < len; i++) {
+					try {
+						xhr = new ActiveXObject(versions[i]);
+						break;
+					}
+					catch(e){}
+				 } // end for
+			}
+			 
+			xhr.onreadystatechange = ensureReadiness;
+			 
+    function ensureReadiness() {
+        if(xhr.readyState < 4) {
+            return;
+        }
+         
+        if(xhr.status !== 200) {
+            return;
+        }
+
+        // all is well  
+        if(xhr.readyState === 4) {
+            callback(xhr);
+        }           
+    }
+    xhr.open('GET', url, true);
+    xhr.send('');
+}
+</script>	
+</body>
+</html>

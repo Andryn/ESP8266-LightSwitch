@@ -1,0 +1,25 @@
+HTTP/1.1 200 OK
+
+<html lang='en'>
+<head>
+    <title>ESP8266 Wireless control setup</title>
+    <script type="text/javascript">
+        path='/';
+        if (typeof(window.history.pushState) == 'function') {
+                window.history.pushState(null, path, path);
+        }
+    </script>
+</head>
+<body bgcolor='#FE2E2E'>
+    <h1>ESP8266 Wireless control setup</h1>
+    The module MAC address is: $MAC<br/>
+    <h2>Enter SSID and Password for your WIFI router</h2>
+    <form action='/set' method='get'>
+        Device ID:<input type='text' name='ID' size=44 value='$ID'/><br/>
+        SSID:<input type='text' name='SSID' size=44 value='$SSID'/><br/>
+        Password:<input type='text' name='PWD' size=40 value='$PWD'/><br/>
+        <input type='checkbox' name='RST' value='1' checked>Restart</input><br/>
+        <input type='submit' value='submit'/>
+    </form>
+</body>
+</html>
