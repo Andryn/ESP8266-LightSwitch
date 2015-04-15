@@ -1,5 +1,5 @@
 # ESP8266-LightSwitch
-2-channel ESP8266 based lightswitch for <a href="http://tronixlabs.com/wireless/esp8266/esp8266-esp-12-full-evaluation-board/">ESP8266 ESP-12 Full Evaluation Board</a>.
+2-channel ESP8266 based lightswitch for <a href="http://www.aliexpress.com/af/ESP8266-ESP%25252d12-Board.html">ESP8266 ESP-12 Full Evaluation Board</a>.
 Work on <a href="https://github.com/nodemcu/nodemcu-firmware/releases/tag/0.9.6-dev_20150406">NodeMCU 0.9.6</a>
 
 ## Hardware
