@@ -1,8 +1,16 @@
---LED
-for p = 6, 8 do
-    pwm.setup(p,500,50)
-    pwm.start(p)
+--==========================Module Part======================
+local moduleName = ...
+local M = {}
+_G[moduleName] = M
+--==========================Local parameters===========
+
+local function ledinit() 
+    for p = 6, 8 do
+        pwm.setup(p,500,50)
+        pwm.start(p)
+    end
 end
+
 local function led(r,g,b) 
     pwm.setduty(8,r) 
     pwm.setduty(6,g) 
@@ -13,7 +21,6 @@ local wifi_ap=function()
     wifi.setmode(wifi.SOFTAP)
     local w = {ssid='ESP'}
     wifi.ap.config(w)
-    cfg.MAC=wifi.ap.getmac()
     local lt=0
     tmr.stop(1)
     tmr.alarm(1,1000,1,function()
@@ -23,25 +30,32 @@ local wifi_ap=function()
             lt=0; led(0,0,0)
         end
     end)
-    
+    return wifi.ap.getmac()
 end
 
 local wifi_st=function()
     wifi.setmode(wifi.STATION)
     wifi.sta.config(cfg.SSID,cfg.PWD)
     wifi.sta.connect()
-    cfg.MAC=wifi.sta.getmac()
     tmr.stop(1)
     tmr.alarm(1,1000,1,function()
         local s=wifi.sta.status()
         if s==0 or s==1 then led(0,0,512)
-        elseif s==5 then led(0,512,0)
+        elseif s==5 then led(0,512,0) tmr.stop(1)
         else led(512,0,0) end
     end)
+    return wifi.sta.getmac()
 end
 
-if restore then
-    wifi_ap()
-else
-    wifi_st()
+--Out--
+function M.wifi(ap)
+    wifi.sleeptype(1) -- 0=NONE_SLEEP_T, 1 =LIGHT_SLEEP_T, 2 = MODEM_SLEEP_T
+    ledinit()
+    if ap==1 then
+        return wifi_ap()
+    else
+        return wifi_st()
+    end
 end
+
+return M

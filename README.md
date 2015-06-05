@@ -42,6 +42,4 @@ Work on <a href="https://github.com/nodemcu/nodemcu-firmware/releases/tag/0.9.6-
 </table>
 ## Use
 http://192.168.4.1/ - Initial manual setup (you need connect to open AP which ssid='ESP')<br/>
-http://[IP_adders]/ - Manual get and set state<br/>
-http://[IP_adders]/get - Get state in json<br/>
-http://[IP_adders]/set?pVL1=0&pVL1=0 - Set "ON" for all switchers<br/>
+Publish state and get command from MQTT broker.
