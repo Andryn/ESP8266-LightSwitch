@@ -25,8 +25,8 @@ function publish()
             print ("Trying to connect to ".. cfg.mqHost .. ":" .. cfg.mqPort .." as " .. cfg.ID)
             m:connect( cfg.mqHost , cfg.mqPort, sc, function(conn)
                 print("Connected to MQTT:" .. cfg.mqHost .. ":" .. cfg.mqPort .." as " .. cfg.ID )
-                m:subscribe(cfg.mqT, 0, function(conn)
-                    print("subscribe ON, topic",cfg.mqT) 
+                m:subscribe(cfg.mqT.."cmd", 0, function(conn)
+                    print("subscribe ON, topic",cfg.mqT.."cmd") 
                 end)
                 connected = true
             end)
@@ -44,8 +44,8 @@ function publish()
     end
     
     if count==1 and publushed then
-        m:publish(cfg.mqT, md, 0, 0, function(conn)
-            print("Send message:"..md.." to Topic:"..cfg.mqT)
+        m:publish(cfg.mqT.."state", md, 0, 0, function(conn)
+            print("Send message:"..md.." to Topic:"..cfg.mqT.."state")
             prevmode = md
             publushed = false
         end)
