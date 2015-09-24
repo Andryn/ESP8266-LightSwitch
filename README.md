@@ -32,11 +32,6 @@ Work on <a href="https://github.com/nodemcu/nodemcu-firmware/releases/tag/0.9.6-
     <tr>
         <td>7</td>
         <td>GPIO13</td>
-        <td>RGB 4-pin LED wifi indicator, blue</td>
-    </tr>
-    <tr>
-        <td>8</td>
-        <td>GPIO15</td>
         <td>RGB 4-pin LED wifi indicator, red</td>
     </tr>
 </table>
