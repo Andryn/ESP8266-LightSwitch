@@ -7,7 +7,7 @@ local count = 0      -- Interations
 local sc = 0         -- default secure mode
 local prevmode = nil       --Prev mode swich
 local connected = false  --Satate of connect
-local publushed = false  --State of publish
+local republish = 0    --=0 if need of republish
 local m = mqtt.Client(cfg.ID, 60, cfg.mqUser, cfg.mqPwd)
 
 function publish()
@@ -16,8 +16,14 @@ function publish()
     end
     tmr.stop(3)
     count = count + 1 
-    if count>10 then --Attempt count
-        count=0 
+    if count > 10 then --Attempt count
+        count=0
+        if republish > 0 and republish < 6 then --republish data for each 60s 
+            republish = republish + 1
+        else
+            republish = 0
+        end
+        --print ("republish = ".. republish)
     end
     if not connected then
         if count==1 then
@@ -38,16 +44,16 @@ function publish()
 
 
     local md=G.getMode()
-    if md ~= prevmode and not publushed then
-        publushed = true
+    if md ~= prevmode then
+        republish = 0
         count = 1
     end
     
-    if count==1 and publushed then
+    if count==1 and republish==0 then
         m:publish(cfg.mqT.."state", md, 0, 0, function(conn)
             print("Send message:"..md.." to Topic:"..cfg.mqT.."state")
             prevmode = md
-            publushed = false
+            republish = 1
         end)
     end
     tmr.alarm(3, 1007, 1, function() publish() end)
@@ -72,6 +78,7 @@ function M.doSwichSend()
         if data ~= nil and prevmode ~= data then
             G.setMode(data)
             prevmode = data
+            republish = 0
         end
     end)
     tmr.alarm(3, 1007, 1, function() publish() end)
