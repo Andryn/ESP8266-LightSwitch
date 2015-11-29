@@ -41,7 +41,7 @@ local wifi_st=function()
     tmr.alarm(1,1000,1,function()
         local s=wifi.sta.status()
         if s==0 or s==1 then led(512,512)
-        elseif s==5 then led(0,512) tmr.stop(1)
+        elseif s==5 then led(0,512)
         else led(512,0) end
     end)
     return wifi.sta.getmac()
